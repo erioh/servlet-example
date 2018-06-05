@@ -1,7 +1,6 @@
 package com.sdemenkov.http.servlet.example.server.servlet;
 
 import com.sdemenkov.http.servlet.example.server.entity.User;
-import com.sdemenkov.http.servlet.example.server.exception.InternalServerErrorRuntimeExpection;
 import com.sdemenkov.http.servlet.example.server.service.UserService;
 import com.sdemenkov.http.servlet.example.server.templater.PageGenerator;
 
@@ -31,7 +30,7 @@ public class AddUserServlet extends HttpServlet {
             User user = createUserFromParameterMap(req);
             userService.save(user);
             resp.sendRedirect("/users");
-        } catch (InternalServerErrorRuntimeExpection e) {
+        } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (FileNotFoundException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -59,7 +58,7 @@ public class AddUserServlet extends HttpServlet {
             user.setGender(genders);
             return user;
         } catch (Exception e) {
-            throw new InternalServerErrorRuntimeExpection(e);
+            throw new RuntimeException(e);
         }
     }
 }

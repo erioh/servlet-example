@@ -3,6 +3,7 @@ package com.sdemenkov.http.servlet.example.server.entity;
 import java.util.Objects;
 
 public class User {
+    Integer id;
     String firstName;
     String lastName;
     Integer age;
@@ -38,6 +39,14 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

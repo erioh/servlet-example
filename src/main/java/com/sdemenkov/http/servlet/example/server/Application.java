@@ -2,6 +2,7 @@ package com.sdemenkov.http.servlet.example.server;
 
 import com.sdemenkov.http.servlet.example.server.dao.JdbcUserDao;
 import com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory;
+import com.sdemenkov.http.servlet.example.server.dao.connection.impl.jdbc.MySqlConnectionFactory;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.ResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.exception.NotFoundRuntimeException;
 import com.sdemenkov.http.servlet.example.server.property.PropertiesFactory;
@@ -60,7 +61,6 @@ public class Application {
         AddUserServlet addUserServlet = new AddUserServlet();
         UserServiceImpl userService = new UserServiceImpl();
         JdbcUserDao userDao = new JdbcUserDao();
-        ConnectionFactory connectionFactory = new ConnectionFactory();
         PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
         ResultSetMapper mapper = new ResultSetMapper();
         PageGenerator pageGenerator = PageGenerator.instance();
@@ -69,8 +69,8 @@ public class Application {
             throw new NotFoundRuntimeException("properties file is not found");
         }
         databasePropertiesFactory.setPath(dbProperties.getPath());
+        ConnectionFactory connectionFactory = new MySqlConnectionFactory(databasePropertiesFactory.create());
 
-        connectionFactory.setDbProperties(databasePropertiesFactory.create());
         userDao.setResultSetMapper(mapper);
         userDao.setConnectionFactory(connectionFactory);
         userService.setUserDao(userDao);

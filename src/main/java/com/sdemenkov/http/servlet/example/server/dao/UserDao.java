@@ -8,4 +8,6 @@ public interface UserDao {
     List<User> findAll();
 
     int save(User user);
+
+    void delete(int id);
 }

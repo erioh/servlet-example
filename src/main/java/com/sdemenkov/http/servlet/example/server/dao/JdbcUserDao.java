@@ -1,9 +1,7 @@
 package com.sdemenkov.http.servlet.example.server.dao;
 
-import com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.ResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.entity.User;
-import com.sdemenkov.http.servlet.example.server.exception.InternalServerErrorRuntimeExpection;
 
 import java.sql.*;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.List;
 import static com.sdemenkov.http.servlet.example.server.dao.UserDaoSql.*;
 
 public class JdbcUserDao implements UserDao {
-    private ConnectionFactory connectionFactory;
+    private com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory connectionFactory;
     private ResultSetMapper resultSetMapper;
 
     @Override
@@ -21,7 +19,7 @@ public class JdbcUserDao implements UserDao {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             return resultSetMapper.map(resultSet, User.class);
         } catch (SQLException e) {
-            throw new InternalServerErrorRuntimeExpection(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -35,11 +33,22 @@ public class JdbcUserDao implements UserDao {
             statement.setString(4, user.getGender());
             return statement.executeUpdate();
         } catch (SQLException e) {
-            throw new InternalServerErrorRuntimeExpection(e);
+            throw new RuntimeException(e);
         }
     }
 
-    public void setConnectionFactory(ConnectionFactory connectionFactory) {
+    @Override
+    public void delete(int id) {
+        try(Connection connection = connectionFactory.create();
+        PreparedStatement statement = connection.prepareStatement(DELETE_USER_SQL)){
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setConnectionFactory(com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 
