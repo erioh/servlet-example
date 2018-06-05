@@ -14,7 +14,7 @@
     Last name:
     <br><input type="text" name="lastName" value="${user.lastName}"><br>
     Age:
-    <br><input type="text" name="age" value="${user.age}"><br>
+    <br><input type="text" name="age" value="${user.age?c}"><br>
     Gender:
     <br><input type="text" name="gender" value="${user.gender}"><br>
     <input type="hidden" name="id" value="${user.id}">
