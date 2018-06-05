@@ -30,6 +30,8 @@
                 <td>
                     <form method="post" action="/user/delete"><input type="hidden" name="id" value="${row.id}"><input
                             type="submit" value="Delete"></form>
+                    <form method="get" action="/user/edit"><input type="hidden" name="id" value="${row.id}"><input
+                            type="submit" value="Edit"></form>
                 </td>
             </tr>
             </#list>

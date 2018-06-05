@@ -22,6 +22,17 @@ public class UserServiceImpl implements UserService {
         userDao.delete(id);
     }
 
+    @Override
+    public User findById(int id) {
+
+        return userDao.findById(id);
+    }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
+
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }

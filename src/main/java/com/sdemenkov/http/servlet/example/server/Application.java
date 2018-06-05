@@ -8,6 +8,8 @@ import com.sdemenkov.http.servlet.example.server.exception.NotFoundRuntimeExcept
 import com.sdemenkov.http.servlet.example.server.property.PropertiesFactory;
 import com.sdemenkov.http.servlet.example.server.service.UserServiceImpl;
 import com.sdemenkov.http.servlet.example.server.servlet.AddUserServlet;
+import com.sdemenkov.http.servlet.example.server.servlet.DeleteUserServlet;
+import com.sdemenkov.http.servlet.example.server.servlet.EditUserServlet;
 import com.sdemenkov.http.servlet.example.server.servlet.UsersServlet;
 import com.sdemenkov.http.servlet.example.server.templater.PageGenerator;
 import org.eclipse.jetty.server.Server;
@@ -59,6 +61,8 @@ public class Application {
         Map<String, HttpServlet> urlToServletMap = new HashMap<>();
         UsersServlet usersServlet = new UsersServlet();
         AddUserServlet addUserServlet = new AddUserServlet();
+        DeleteUserServlet deleteUserServlet = new DeleteUserServlet();
+        EditUserServlet editUserServlet = new EditUserServlet();
         UserServiceImpl userService = new UserServiceImpl();
         JdbcUserDao userDao = new JdbcUserDao();
         PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
@@ -78,10 +82,15 @@ public class Application {
         usersServlet.setPageGenerator(pageGenerator);
         addUserServlet.setUserService(userService);
         addUserServlet.setPageGenerator(pageGenerator);
+        deleteUserServlet.setUserService(userService);
+        editUserServlet.setPageGenerator(pageGenerator);
+        editUserServlet.setUserService(userService);
         pageGenerator.setPathToTemplates(this.pathToTemplates);
 
         urlToServletMap.put("/users", usersServlet);
         urlToServletMap.put("/userAdd", addUserServlet);
+        urlToServletMap.putIfAbsent("/user/delete", deleteUserServlet);
+        urlToServletMap.putIfAbsent("/user/edit", editUserServlet);
         this.setUrlToServletMap(urlToServletMap);
     }
 
