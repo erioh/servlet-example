@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.sdemenkov.http.servlet.example.server.dao.UserDaoSql.*;
 
-public class UserDaoJdbc implements UserDao {
+public class JdbcUserDao implements UserDao {
     private ConnectionFactory connectionFactory;
     private ResultSetMapper resultSetMapper;
 

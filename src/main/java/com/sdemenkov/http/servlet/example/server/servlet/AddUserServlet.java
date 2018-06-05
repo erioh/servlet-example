@@ -39,8 +39,7 @@ public class AddUserServlet extends HttpServlet {
             List<User> userList = userService.findAll();
             Map<String, Object> parametersMap = new HashMap<>();
             parametersMap.put("userList", userList);
-            String responseContent = pageGenerator.getPage("users.ftl", parametersMap);
-            resp.getWriter().println(responseContent);
+            resp.sendRedirect("/users");
         } catch (InternalServerErrorRuntimeExpection e){
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (FileNotFoundException e) {

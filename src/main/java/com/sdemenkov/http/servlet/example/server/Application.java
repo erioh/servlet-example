@@ -1,6 +1,6 @@
 package com.sdemenkov.http.servlet.example.server;
 
-import com.sdemenkov.http.servlet.example.server.dao.UserDaoJdbc;
+import com.sdemenkov.http.servlet.example.server.dao.JdbcUserDao;
 import com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.ResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.exception.NotFoundRuntimeException;
@@ -59,7 +59,7 @@ public class Application {
         UsersServlet usersServlet = new UsersServlet();
         AddUserServlet addUserServlet = new AddUserServlet();
         UserServiceImpl userService = new UserServiceImpl();
-        UserDaoJdbc userDao = new UserDaoJdbc();
+        JdbcUserDao userDao = new JdbcUserDao();
         ConnectionFactory connectionFactory = new ConnectionFactory();
         PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
         ResultSetMapper mapper = new ResultSetMapper();
