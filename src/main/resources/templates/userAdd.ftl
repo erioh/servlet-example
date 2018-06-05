@@ -8,7 +8,7 @@
 
 <body>
 <h1>Add User</h1>
-<form action="/userAdd" method="post">
+<form action="/user/add" method="post">
     First name:
     <br><input type="text" name="firstName"><br>
     Last name:

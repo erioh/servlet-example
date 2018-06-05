@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class AddUserServlet extends HttpServlet {
@@ -56,6 +57,7 @@ public class AddUserServlet extends HttpServlet {
             user.setLastName(lastNames);
             user.setAge(Integer.parseInt(ages));
             user.setGender(genders);
+            user.setRegisteredAt(LocalDateTime.now());
             return user;
         } catch (Exception e) {
             throw new RuntimeException(e);

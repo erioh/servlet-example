@@ -3,7 +3,9 @@ package com.sdemenkov.http.servlet.example.server;
 import com.sdemenkov.http.servlet.example.server.dao.JdbcUserDao;
 import com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory;
 import com.sdemenkov.http.servlet.example.server.dao.connection.impl.jdbc.MySqlConnectionFactory;
-import com.sdemenkov.http.servlet.example.server.dao.mapper.ResultSetMapper;
+import com.sdemenkov.http.servlet.example.server.dao.mapper.CachedFieldsResultSetMapper;
+import com.sdemenkov.http.servlet.example.server.dao.mapper.DomainNameBasedResultSetMapper;
+import com.sdemenkov.http.servlet.example.server.dao.mapper.TimestampToLocalDateTimeConvertResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.exception.NotFoundRuntimeException;
 import com.sdemenkov.http.servlet.example.server.property.PropertiesFactory;
 import com.sdemenkov.http.servlet.example.server.service.UserServiceImpl;
@@ -57,7 +59,7 @@ public class Application {
         this.pathToTemplates = pathToTemplates;
     }
 
-    public void configuration(){
+    public void configuration() {
         Map<String, HttpServlet> urlToServletMap = new HashMap<>();
         UsersServlet usersServlet = new UsersServlet();
         AddUserServlet addUserServlet = new AddUserServlet();
@@ -66,7 +68,9 @@ public class Application {
         UserServiceImpl userService = new UserServiceImpl();
         JdbcUserDao userDao = new JdbcUserDao();
         PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
-        ResultSetMapper mapper = new ResultSetMapper();
+        DomainNameBasedResultSetMapper mapper = new TimestampToLocalDateTimeConvertResultSetMapper(
+                new CachedFieldsResultSetMapper(
+                        new DomainNameBasedResultSetMapper()));
         PageGenerator pageGenerator = PageGenerator.instance();
         URL dbProperties = this.getClass().getClassLoader().getResource(this.pathToDbProperties);
         if (dbProperties == null) {
@@ -88,7 +92,7 @@ public class Application {
         pageGenerator.setPathToTemplates(this.pathToTemplates);
 
         urlToServletMap.put("/users", usersServlet);
-        urlToServletMap.put("/userAdd", addUserServlet);
+        urlToServletMap.put("/user/add", addUserServlet);
         urlToServletMap.putIfAbsent("/user/delete", deleteUserServlet);
         urlToServletMap.putIfAbsent("/user/edit", editUserServlet);
         this.setUrlToServletMap(urlToServletMap);

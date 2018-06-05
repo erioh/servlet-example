@@ -9,7 +9,7 @@
 
 <body>
 <h1>Welcome</h1>
-<a href="/userAdd" class="button">Add User</a>
+<a href="/user/add" class="button">Add User</a>
 <table class="container">
     <tr>
         <th>Id</th>
@@ -17,6 +17,7 @@
         <th>Last Name</th>
         <th>Age</th>
         <th>Gender</th>
+        <th>RegisteredAt</th>
         <th>Buttons</th>
 
     </tr>
@@ -27,6 +28,7 @@
                 <td>${row.lastName}</td>
                 <td>${row.age}</td>
                 <td>${row.gender}</td>
+                <td>${row.registeredAt?datetime("iso m nz")?date}</td>
                 <td>
                     <form method="post" action="/user/delete"><input type="hidden" name="id" value="${row.id}"><input
                             type="submit" value="Delete"></form>

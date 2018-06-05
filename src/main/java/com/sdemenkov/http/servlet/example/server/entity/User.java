@@ -1,5 +1,8 @@
 package com.sdemenkov.http.servlet.example.server.entity;
 
+import com.sdemenkov.http.servlet.example.server.dao.mapper.TimestampToLocalDateTime;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
@@ -8,6 +11,8 @@ public class User {
     String lastName;
     Integer age;
     String gender;
+    @TimestampToLocalDateTime
+    LocalDateTime registeredAt;
 
     public String getFirstName() {
         return firstName;
@@ -49,15 +54,12 @@ public class User {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", age=").append(age);
-        sb.append(", gender='").append(gender).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(LocalDateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     @Override
@@ -65,15 +67,30 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) &&
+        return Objects.equals(id, user.id) &&
+                Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(age, user.age) &&
-                Objects.equals(gender, user.gender);
+                Objects.equals(gender, user.gender) &&
+                Objects.equals(registeredAt, user.registeredAt);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(firstName, lastName, age, gender);
+        return Objects.hash(id, firstName, lastName, age, gender, registeredAt);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id=").append(id);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", age=").append(age);
+        sb.append(", gender='").append(gender).append('\'');
+        sb.append(", registeredAt=").append(registeredAt);
+        sb.append('}');
+        return sb.toString();
     }
 }

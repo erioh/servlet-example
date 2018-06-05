@@ -1,16 +1,17 @@
 package com.sdemenkov.http.servlet.example.server.dao;
 
-import com.sdemenkov.http.servlet.example.server.dao.mapper.ResultSetMapper;
+import com.sdemenkov.http.servlet.example.server.dao.mapper.DomainNameBasedResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.entity.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.sdemenkov.http.servlet.example.server.dao.UserDaoSql.*;
 
 public class JdbcUserDao implements UserDao {
     private com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory connectionFactory;
-    private ResultSetMapper resultSetMapper;
+    private DomainNameBasedResultSetMapper resultSetMapper;
 
     @Override
     public List<User> findAll() {
@@ -31,6 +32,8 @@ public class JdbcUserDao implements UserDao {
             statement.setString(2, user.getLastName());
             statement.setInt(3, user.getAge());
             statement.setString(4, user.getGender());
+            LocalDateTime registeredAt = user.getRegisteredAt();
+            statement.setTimestamp(5, Timestamp.valueOf(registeredAt));
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,7 +86,7 @@ public class JdbcUserDao implements UserDao {
         this.connectionFactory = connectionFactory;
     }
 
-    public void setResultSetMapper(ResultSetMapper resultSetMapper) {
+    public void setResultSetMapper(DomainNameBasedResultSetMapper resultSetMapper) {
         this.resultSetMapper = resultSetMapper;
     }
 }
