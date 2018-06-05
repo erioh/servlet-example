@@ -6,13 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,7 +25,7 @@ public class DeleteUserServletTest {
     private HttpServletRequest servletRequest;
 
     @Test
-    public void doPost() throws ServletException, IOException {
+    public void doPost() throws IOException {
 
         DeleteUserServlet deleteUserServlet = new DeleteUserServlet();
         when(servletRequest.getParameter("id")).thenReturn("1");

@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CachedFieldsResultSetMapper extends DomainNameBasedResultSetMapper {
-    private DomainNameBasedResultSetMapper resultSetMapper;
-    private Map<Class, Field[]> classMap = new ConcurrentHashMap<>();
+    private final DomainNameBasedResultSetMapper resultSetMapper;
+    private final Map<Class, Field[]> classMap = new ConcurrentHashMap<>();
 
     public CachedFieldsResultSetMapper(DomainNameBasedResultSetMapper resultSetMapper) {
         this.resultSetMapper = resultSetMapper;

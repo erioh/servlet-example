@@ -4,7 +4,6 @@ import com.sdemenkov.http.servlet.example.server.entity.User;
 import com.sdemenkov.http.servlet.example.server.service.UserService;
 import com.sdemenkov.http.servlet.example.server.templater.PageGenerator;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ public class AddUserServlet extends HttpServlet {
     private PageGenerator pageGenerator;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String responseContent = pageGenerator.getPage("userAdd.ftl", new HashMap<>());
         resp.getWriter().println(responseContent);
 
@@ -26,7 +25,7 @@ public class AddUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             User user = createUserFromParameterMap(req);
             userService.save(user);
@@ -57,7 +56,6 @@ public class AddUserServlet extends HttpServlet {
             user.setLastName(lastNames);
             user.setAge(Integer.parseInt(ages));
             user.setGender(genders);
-            user.setRegisteredAt(LocalDateTime.now());
             return user;
         } catch (Exception e) {
             throw new RuntimeException(e);

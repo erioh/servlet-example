@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +25,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddUserServletTest {
-    private AddUserServlet addUserServlet = new AddUserServlet();
-    private Map<String, String[]> parameterMap = new HashMap<>();
+    private final AddUserServlet addUserServlet = new AddUserServlet();
+    private final Map<String, String[]> parameterMap = new HashMap<>();
 
     @Mock
     private PageGenerator pageGenerator;
@@ -54,7 +53,7 @@ public class AddUserServletTest {
     }
 
     @Test
-    public void doGet() throws IOException, ServletException {
+    public void doGet() throws IOException {
         String expectedBody = "expected body";
         when(pageGenerator.getPage(eq("userAdd.ftl"), anyMapOf(String.class, Object.class))).thenReturn(expectedBody);
         StringWriter stringWriter = new StringWriter();

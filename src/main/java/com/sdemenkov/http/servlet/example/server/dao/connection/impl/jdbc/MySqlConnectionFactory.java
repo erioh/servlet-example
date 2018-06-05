@@ -10,7 +10,7 @@ import java.util.Properties;
 import static com.sdemenkov.http.servlet.example.server.property.DbPropertiesType.*;
 
 public class MySqlConnectionFactory implements ConnectionFactory {
-    private MysqlDataSource dataSource = new MysqlDataSource();
+    private final MysqlDataSource dataSource = new MysqlDataSource();
 
 
     public MySqlConnectionFactory(Properties dbProperties) {

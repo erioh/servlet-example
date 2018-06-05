@@ -1,5 +1,6 @@
-package com.sdemenkov.http.servlet.example.server.dao;
+package com.sdemenkov.http.servlet.example.server.dao.jdbc;
 
+import com.sdemenkov.http.servlet.example.server.dao.UserDao;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.DomainNameBasedResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.entity.User;
 

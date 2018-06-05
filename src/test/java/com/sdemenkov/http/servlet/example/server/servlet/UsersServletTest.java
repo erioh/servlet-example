@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,9 +25,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class UsersServletTest {
 
-    private UsersServlet usersServlet = new UsersServlet();
+    private final UsersServlet usersServlet = new UsersServlet();
 
-    private Map<String, String[]> parameterMap = new HashMap<>();
+    private final Map<String, String[]> parameterMap = new HashMap<>();
 
     @Mock
     private PageGenerator pageGenerator;
@@ -54,7 +53,7 @@ public class UsersServletTest {
         parameterMap.put("age", age);
     }
     @Test
-    public void doGet() throws IOException, ServletException {
+    public void doGet() throws IOException {
         String expectedBody = "expected body";
         when(pageGenerator.getPage(eq("users.ftl"), anyMapOf(String.class, Object.class))).thenReturn(expectedBody);
         when(userService.findAll()).thenReturn(new ArrayList<>());

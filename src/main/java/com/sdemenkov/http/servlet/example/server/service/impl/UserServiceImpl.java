@@ -1,8 +1,10 @@
-package com.sdemenkov.http.servlet.example.server.service;
+package com.sdemenkov.http.servlet.example.server.service.impl;
 
 import com.sdemenkov.http.servlet.example.server.dao.UserDao;
 import com.sdemenkov.http.servlet.example.server.entity.User;
+import com.sdemenkov.http.servlet.example.server.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -14,6 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int save(User user) {
+        user.setRegisteredAt(LocalDateTime.now());
         return userDao.save(user);
     }
 

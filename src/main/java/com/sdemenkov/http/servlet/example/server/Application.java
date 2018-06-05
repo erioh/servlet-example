@@ -1,14 +1,14 @@
 package com.sdemenkov.http.servlet.example.server;
 
-import com.sdemenkov.http.servlet.example.server.dao.JdbcUserDao;
 import com.sdemenkov.http.servlet.example.server.dao.connection.ConnectionFactory;
 import com.sdemenkov.http.servlet.example.server.dao.connection.impl.jdbc.MySqlConnectionFactory;
+import com.sdemenkov.http.servlet.example.server.dao.jdbc.JdbcUserDao;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.CachedFieldsResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.DomainNameBasedResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.dao.mapper.TimestampToLocalDateTimeConvertResultSetMapper;
 import com.sdemenkov.http.servlet.example.server.exception.NotFoundRuntimeException;
 import com.sdemenkov.http.servlet.example.server.property.PropertiesFactory;
-import com.sdemenkov.http.servlet.example.server.service.UserServiceImpl;
+import com.sdemenkov.http.servlet.example.server.service.impl.UserServiceImpl;
 import com.sdemenkov.http.servlet.example.server.servlet.AddUserServlet;
 import com.sdemenkov.http.servlet.example.server.servlet.DeleteUserServlet;
 import com.sdemenkov.http.servlet.example.server.servlet.EditUserServlet;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class Application {
     private int port;
@@ -59,43 +60,54 @@ public class Application {
         this.pathToTemplates = pathToTemplates;
     }
 
-    public void configuration() {
-        Map<String, HttpServlet> urlToServletMap = new HashMap<>();
-        UsersServlet usersServlet = new UsersServlet();
-        AddUserServlet addUserServlet = new AddUserServlet();
-        DeleteUserServlet deleteUserServlet = new DeleteUserServlet();
-        EditUserServlet editUserServlet = new EditUserServlet();
-        UserServiceImpl userService = new UserServiceImpl();
-        JdbcUserDao userDao = new JdbcUserDao();
-        PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
-        DomainNameBasedResultSetMapper mapper = new TimestampToLocalDateTimeConvertResultSetMapper(
-                new CachedFieldsResultSetMapper(
-                        new DomainNameBasedResultSetMapper()));
-        PageGenerator pageGenerator = PageGenerator.instance();
+    public Properties getDbProperties(){
         URL dbProperties = this.getClass().getClassLoader().getResource(this.pathToDbProperties);
         if (dbProperties == null) {
             throw new NotFoundRuntimeException("properties file is not found");
         }
+        PropertiesFactory databasePropertiesFactory = new PropertiesFactory();
         databasePropertiesFactory.setPath(dbProperties.getPath());
-        ConnectionFactory connectionFactory = new MySqlConnectionFactory(databasePropertiesFactory.create());
+        return databasePropertiesFactory.create();
+    }
 
+    public DomainNameBasedResultSetMapper getDomainNameBasedResultSetMapper(){
+        return new TimestampToLocalDateTimeConvertResultSetMapper(
+                new CachedFieldsResultSetMapper(
+                        new DomainNameBasedResultSetMapper()));
+    }
+
+    public void configuration() {
+
+        JdbcUserDao userDao = new JdbcUserDao();
+        DomainNameBasedResultSetMapper mapper = getDomainNameBasedResultSetMapper();
         userDao.setResultSetMapper(mapper);
+        ConnectionFactory connectionFactory = new MySqlConnectionFactory(getDbProperties());
         userDao.setConnectionFactory(connectionFactory);
+
+        UserServiceImpl userService = new UserServiceImpl();
         userService.setUserDao(userDao);
+
+        UsersServlet usersServlet = new UsersServlet();
+        AddUserServlet addUserServlet = new AddUserServlet();
+        DeleteUserServlet deleteUserServlet = new DeleteUserServlet();
+        EditUserServlet editUserServlet = new EditUserServlet();
+
         usersServlet.setUserService(userService);
-        usersServlet.setPageGenerator(pageGenerator);
         addUserServlet.setUserService(userService);
-        addUserServlet.setPageGenerator(pageGenerator);
         deleteUserServlet.setUserService(userService);
-        editUserServlet.setPageGenerator(pageGenerator);
         editUserServlet.setUserService(userService);
+
+        PageGenerator pageGenerator = PageGenerator.instance();
         pageGenerator.setPathToTemplates(this.pathToTemplates);
+
+        usersServlet.setPageGenerator(pageGenerator);
+        addUserServlet.setPageGenerator(pageGenerator);
+        editUserServlet.setPageGenerator(pageGenerator);
 
         urlToServletMap.put("/users", usersServlet);
         urlToServletMap.put("/user/add", addUserServlet);
         urlToServletMap.putIfAbsent("/user/delete", deleteUserServlet);
         urlToServletMap.putIfAbsent("/user/edit", editUserServlet);
-        this.setUrlToServletMap(urlToServletMap);
     }
 
     public void setPathToDbProperties(String pathToDbProperties) {

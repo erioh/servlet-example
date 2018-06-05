@@ -4,7 +4,6 @@ import com.sdemenkov.http.servlet.example.server.entity.User;
 import com.sdemenkov.http.servlet.example.server.service.UserService;
 import com.sdemenkov.http.servlet.example.server.templater.PageGenerator;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditUserServlet extends HttpServlet {
-    UserService userService;
+    private UserService userService;
     private PageGenerator pageGenerator;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idString = req.getParameter("id");
         int id = Integer.parseInt(idString);
         User user = userService.findById(id);
@@ -29,7 +28,7 @@ public class EditUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User userFromRequest = getUserFromRequest(req);
         userService.update(userFromRequest);
         resp.sendRedirect("/users");

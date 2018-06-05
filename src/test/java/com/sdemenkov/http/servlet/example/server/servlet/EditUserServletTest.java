@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,14 +16,13 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EditUserServletTest {
 
-    private EditUserServlet editUserServlet = new EditUserServlet();
+    private final EditUserServlet editUserServlet = new EditUserServlet();
 
     @Mock
     private PageGenerator pageGenerator;
@@ -39,7 +37,7 @@ public class EditUserServletTest {
     private HttpServletRequest servletRequest;
 
     @Test
-    public void doGet() throws ServletException, IOException {
+    public void doGet() throws IOException {
         String expected = "result";
         User user = new User();
         when(servletRequest.getParameter("id")).thenReturn("1");
@@ -55,7 +53,7 @@ public class EditUserServletTest {
     }
 
     @Test
-    public void doPost() throws ServletException, IOException {
+    public void doPost() throws IOException {
         when(servletRequest.getParameter("firstName")).thenReturn("Sergey");
         when(servletRequest.getParameter("lastName")).thenReturn("Demenkov");
         when(servletRequest.getParameter("gender")).thenReturn("God");

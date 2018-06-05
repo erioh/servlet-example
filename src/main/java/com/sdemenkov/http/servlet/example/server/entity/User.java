@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
-    Integer id;
-    String firstName;
-    String lastName;
-    Integer age;
-    String gender;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private Integer age;
+    private String gender;
     @TimestampToLocalDateTime
-    LocalDateTime registeredAt;
+    private LocalDateTime registeredAt;
 
     public String getFirstName() {
         return firstName;

@@ -4,7 +4,6 @@ import com.sdemenkov.http.servlet.example.server.entity.User;
 import com.sdemenkov.http.servlet.example.server.service.UserService;
 import com.sdemenkov.http.servlet.example.server.templater.PageGenerator;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ public class UsersServlet extends HttpServlet {
     private PageGenerator pageGenerator;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<User> userList = userService.findAll();
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("userList", userList);

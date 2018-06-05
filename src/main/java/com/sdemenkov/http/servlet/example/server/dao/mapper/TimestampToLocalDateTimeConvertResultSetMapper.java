@@ -2,13 +2,12 @@ package com.sdemenkov.http.servlet.example.server.dao.mapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class TimestampToLocalDateTimeConvertResultSetMapper extends DomainNameBasedResultSetMapper {
-    private DomainNameBasedResultSetMapper resultSetMapper;
+    private final DomainNameBasedResultSetMapper resultSetMapper;
 
     public TimestampToLocalDateTimeConvertResultSetMapper(DomainNameBasedResultSetMapper resultSetMapper) {
         this.resultSetMapper = resultSetMapper;
