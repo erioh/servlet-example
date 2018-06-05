@@ -19,12 +19,10 @@ public class UsersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestURI = req.getRequestURI();
-        String templateName = getTemplateName(requestURI);
         List<User> userList = userService.findAll();
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("userList", userList);
-        String responseContent = pageGenerator.getPage(templateName, parameterMap);
+        String responseContent = pageGenerator.getPage("users.ftl", parameterMap);
         resp.setContentType("text/html;charset=utf-8");
         resp.getWriter().println(responseContent);
     }
@@ -37,7 +35,4 @@ public class UsersServlet extends HttpServlet {
         this.pageGenerator = pageGenerator;
     }
 
-    public String getTemplateName(String requestURI){
-        return requestURI.substring(1)+".ftl";
-    }
 }

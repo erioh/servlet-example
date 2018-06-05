@@ -56,8 +56,7 @@ public class AddUserServletTest {
     @Test
     public void doGet() throws IOException, ServletException {
         String expectedBody = "expected body";
-        when(pageGenerator.getPage(eq("test.ftl"), anyMapOf(String.class, Object.class))).thenReturn(expectedBody);
-        when(servletRequest.getRequestURI()).thenReturn("/test");
+        when(pageGenerator.getPage(eq("userAdd.ftl"), anyMapOf(String.class, Object.class))).thenReturn(expectedBody);
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(servletResponse.getWriter()).thenReturn(writer);
@@ -71,28 +70,12 @@ public class AddUserServletTest {
 
     @Test
     public void doPost() throws ServletException, IOException {
-        String expectedBody = "expected body";
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        when(servletResponse.getWriter()).thenReturn(writer);
-        when(pageGenerator.getPage(eq("users.ftl"), anyMapOf(String.class, Object.class))).thenReturn(expectedBody);
-        when(servletRequest.getRequestURI()).thenReturn("/users");
-        when(userService.findAll()).thenReturn(new ArrayList<>());
         when(servletRequest.getParameterMap()).thenReturn(parameterMap);
-
         addUserServlet.setUserService(userService);
         addUserServlet.setPageGenerator(pageGenerator);
         addUserServlet.doPost(servletRequest, servletResponse);
-        writer.flush();
-        assertEquals(expectedBody, stringWriter.toString().trim());
     }
 
-    @Test
-    public void getTemplateName() {
-        String expectedTemplateName = "test.ftl";
-        String templateName = addUserServlet.getTemplateName("/test");
-        assertEquals(expectedTemplateName, templateName);
-    }
 
     @Test
     public void createUserFromParameterMap() {
@@ -101,7 +84,11 @@ public class AddUserServletTest {
         expectedUser.setLastName("Demenkov");
         expectedUser.setGender("God");
         expectedUser.setAge(33);
-        User actualUser = addUserServlet.createUserFromParameterMap(parameterMap);
+        when(servletRequest.getParameter("firstName")).thenReturn("Sergey");
+        when(servletRequest.getParameter("lastName")).thenReturn("Demenkov");
+        when(servletRequest.getParameter("gender")).thenReturn("God");
+        when(servletRequest.getParameter("age")).thenReturn("33");
+        User actualUser = addUserServlet.createUserFromParameterMap(servletRequest);
         assertEquals(expectedUser, actualUser);
     }
 }
