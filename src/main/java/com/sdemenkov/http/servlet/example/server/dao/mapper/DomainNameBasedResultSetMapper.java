@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DomainNameBasedResultSetMapper {
 
-    public <T> List<T> map(ResultSet resultSet, Class<T> clazz) {
+    public final  <T> List<T> map(ResultSet resultSet, Class<T> clazz) {
         try {
             List<T> list = new ArrayList<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
